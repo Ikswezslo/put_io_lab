@@ -3,4 +3,4 @@ public class HelloWorld { zmiana
         // to jest klasa
 	// TODO jakiś kod zmiana
     }
-}zmiana
+}
