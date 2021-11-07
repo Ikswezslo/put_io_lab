@@ -1,6 +1,6 @@
-public class HelloWorld {
+public class HelloWorldd {
     public static void main(String[] args) {
         // to jest klasa
-	// TODO jakiś kod
+	// TODO jakiś koddd
     }
 }

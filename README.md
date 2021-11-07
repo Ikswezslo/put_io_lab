@@ -1,4 +1,4 @@
 # put_io_lab
-Mateusz Olszewski
+ateusz Olszewski
 25.10.2021
 test
