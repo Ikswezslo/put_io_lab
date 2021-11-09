@@ -16,10 +16,10 @@ Specyfikacja wymagań funkcjonalnych w ramach informatyzacji procesu sprzedaży 
 
 **Scenariusz główny:**
 1. [Sprzedający](#ac1) wystawia produkt na aukcję. ([UC1](#uc1))
-2. [Kupujący](#ac2) oferuje kwotę za produkt wyższą od aktualnie najwyższej oferty. ([BR1](#br1))
+2. [Kupujący](#ac2) oferuje kwotę za produkt wyższą od aktualnie najwyższej oferty. ([BR1](#br1)) ([UC2](#uc2))
 3. [Kupujący](#ac2) wygrywa aukcję ([BR2](#br2))
-4. [Kupujący](#ac2) przekazuje należność Sprzedającemu.
-5. [Sprzedający](#ac1) przekazuje produkt Kupującemu.
+4. [Kupujący](#ac2) przekazuje należność Sprzedającemu. ([UC3](#uc3))
+5. [Sprzedający](#ac1) przekazuje produkt Kupującemu. ([UC4](#uc4))
 
 **Scenariusze alternatywne:** 
 
@@ -50,11 +50,16 @@ Osoba chcąca zakupić produkt na aukcji.
 
 [Sprzedający](#ac1):
 * [UC1](#uc1): Wystawienie produktu na aukcję
-* 
+* [UC4](#uc4): Przekazanie produktu kupującemu
+* [UC7](#uc7): Modyfikacja opisu produktu
 
-[Kupujący](#ac2)
-* [UC2](#uc2): 
+[Kupujący](#ac2):
+* [UC2](#uc2): Zaoferowanie wyższej kwoty za produkt
+* [UC3](#uc3): Przekazanie należnosći sprzedającemu
 
+[Sprzedający](#ac1), [Kupujący](#ac2):
+* [UC5](#uc5): Sprawdzenie statusu zamówienia
+* [UC6](#uc6): Sprawdzenie opisu produktu
 ---
 <a id="uc1"></a>
 ### UC1: Wystawienie produktu na aukcję
@@ -77,17 +82,67 @@ Osoba chcąca zakupić produkt na aukcji.
 ---
 
 <a id="uc2"></a>
-### UC2: ...
+### UC2: Zaoferowanie wyższej kwoty za produkt
 
-**Aktorzy:** [Sprzedający](#ac1), [Kupujący](#ac2), ...
+**Aktorzy:** [Kupujący](#ac2)
 
 **Scenariusz główny:**
-1. ...
+1. [Kupujący](#ac2) zgłasza do systemu chęć zaoferowania wyższej kwoty za produkt.
+2. System prosi o podanie nowej kwoty za produkt.
+3. [Kupujący](#ac2) kupujący podaje nową kwotę za produkt.
+4. System weryfikuje poprawność danych.
+5. System informuje o wystawieniu pomyślnej oferty za produkt.
 
 **Scenariusze alternatywne:** 
 
-1.A. ...
-* 4.A.1. ...
+4.A. Podano niepoprawną cenę produktu.
+* 4.A.1. System informuje o błędnie podanej cenie.
+* 4.A.2. Przejdź do kroku 2.
+
+---
+
+<a id="uc3"></a>
+### UC3: Przekazanie należnosći sprzedającemu
+**Aktorzy:** [Kupujący](#ac2)
+
+**Scenariusz główny:**
+1. [Kupujący](#ac2) zgłasza do systemu chęć przekazania należności kupującemu.
+2. System przekierowuje kupującego do zewnętrznej strony obsługującej opłaty.
+3. [Kupujący](#ac2) dokonuje płatności za produkt.
+4. System oczekuje na potwierdzenie przekazania należności sprzedającemu.
+5. System informuje o poprawnym wykonaniu transakcji.
+6. System zmienia status zamówienia na 'opłacona'.
+
+**Scenariusze alternatywne:** 
+
+4.A. Dokonanie płatności zakończyło się niepowodzeniem
+* 4.A.1. System informuje o błędnie dokonanej płatności.
+* 4.A.2. Przejdź do kroku 2.
+
+---
+
+<a id="uc4"></a>
+### UC4: Przekazanie produktu kupującemu
+**Aktorzy:** [Sprzedający](#ac1), [Kupujący](#ac2)
+
+**Scenariusz główny:**
+1. [Sprzedający](#ac1) zgłasza do systemu chęć poznania danych zwycięzcy aukcji.
+2. System informuje Sprzedającego o danych zwycięzcy aukcji.
+3. [Sprzedający](#ac1) wysyła produkt Kupującemu
+4. [Sprzedający](#ac1) przekazuje do systemu informację o wysłaniu produktu
+5. System zmienia status zamówienia na 'wysłana'.
+6. [Kupujący](#ac2) odbiera produkt
+7. System zmienia status zamówienia na 'doręczona'.
+
+3.A. Sprzedający nie wysłał produktu przez długi czas od momentu zakończenia aukcji
+* 4.A.1. System przypomina Sprzedającemu o konieczności wysłania paczki.
+* 4.A.2. Przejdź do kroku 2.
+
+6.A Kupujący nie odebrał paczki
+* 6.A.1. System informuje Sprzedającego i Kupującego o zaistniałej sytuacji.
+* 6.A.2. Produkt zostaje odesłana do Sprzedającego
+* 6.A.3. System zmienia status zamówienia na 'odesłana do nadawcy'.
+* 6.A.4. Przejdź do kroku 3. 
 
 ---
 
@@ -100,6 +155,10 @@ Aukcja jest formą zawierania transakcji kupna-sprzedaży, w której Sprzedając
 ### BO2: Produkt
 
 Fizyczny lub cyfrowy obiekt, który ma zostać sprzedany w ramach aukcji.
+
+### BO3: Zamówienie
+
+Informacja o stanie wysłanego produktu przez Sprzedającego do Kupującego, który wygrał aukcję. Zamówienie może mieć stan: 'nieopłacona', 'opłacona', 'wysłana', 'doręczona', 'odesłana do nadawcy'. Początkowy stan zamówienia to 'nieopłacona'.
 
 ## Reguły biznesowe
 
@@ -117,10 +176,12 @@ Aukcję wygrywa ten z [Kupujący](#ac2)ch, który w momencie jej zakończenia (u
 ## Macierz CRUDL
 
 
-| Przypadek użycia                                  | Aukcja | Produkt | ... |
-| ------------------------------------------------- | ------ | ------- | --- |
-| UC1: Wystawienia produktu na aukcję               |    C   |    C    | ... |
-| ???                                               |  ...   |  ...    | ... |
-
-
-
+| Przypadek użycia                                  | Aukcja | Produkt | Zamówienie |
+| ------------------------------------------------- | ------ | ------- | ---------  |
+| UC1: Wystawienia produktu na aukcję               |    C   |    C    |  -         |
+| UC2: Zaoferowanie wyższej kwoty za produkt        |  R,U   |  ...    |  -         |
+| UC3: Przekazanie należnosci sprzedającemu         |  D     |  ...    |    C,U     |
+| UC4: Przekazanie produktu kupującemu              |  -     |  D      |    U,D     |
+| UC5: Sprawdzenie statusu zamówienia               |   -    |   -     |    R       |
+| UC6: Sprawdzenie opisu produktu                   |   -    |   R     |    -       |
+| UC7: Modyfikacja opisu produktu                   |  -     |   U     |    -       |
