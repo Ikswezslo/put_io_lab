@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Pytanie 5.1: jest to testowanie typu whitebox
+// Pytanie 5.2: istnieją 4 możliwe ścieżki działania
+
 class AudiobookPriceCalculatorTest {
     private Audiobook audiobook;
     private AudiobookPriceCalculator calculator;
